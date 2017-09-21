@@ -12,5 +12,6 @@
 .rspec_status
 
 .project_notes
-.swp
-.swo
+*.swp
+*.swo
+.DS_Store
