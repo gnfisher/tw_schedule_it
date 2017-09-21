@@ -2,10 +2,16 @@
 
 require "tw_schedule_it"
 
-if ARGV.empty?
+talks_file_path = ARGV[0]
+
+if talks_file_path == nil
   puts "Error: You must pass a plain text file with the talk information as an argument to tw_schedule_it."
+  exit(1)
+elsif File.file? File.expand_path(talks_file_path)
+  puts "Error: The talks information file you provided doesn't exist. Check the file path please."
   exit(1)
 end
 
-cli = TwScheduleIt::CLI.new(ARGV)
+
+cli = TwScheduleIt::App.new(talks_file_path)
 cli.start
