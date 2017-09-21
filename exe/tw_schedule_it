@@ -2,5 +2,10 @@
 
 require "tw_schedule_it"
 
-puts "Here"
+if ARGV.empty?
+  puts "Error: You must pass a plain text file with the talk information as an argument to tw_schedule_it."
+  exit(1)
+end
+
 cli = TwScheduleIt::CLI.new(ARGV)
+cli.start
