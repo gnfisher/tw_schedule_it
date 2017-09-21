@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "pry"
 require "tw_schedule_it"
 
 RSpec.configure do |config|

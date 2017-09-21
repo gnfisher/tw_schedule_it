@@ -1,17 +1,15 @@
-require "tw_schedule_it/tw_schedule_it/version"
+require "tw_schedule_it/version"
+
+require "tw_schedule_it/event"
+require "tw_schedule_it/talks_factory"
 
 module TwScheduleIt
-  class CLI
-    # $ schedule_it talks.txt
-    # Event name:
-    # Event description:
-    # ...
-    # Menu:
-    # 1. View full schedule
-    # 2. View full list of talks
-    #
-    def initialize(argv)
-      puts argv
+  class App
+    attr_reader :event
+
+    def initialize(talks_file_path)
+      @event = TwScheduleIt::Event.new(
+        talks: TalksFactory.build_from_file(talks_file_path))
     end
   end
 end
