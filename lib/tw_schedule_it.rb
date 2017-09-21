@@ -8,8 +8,9 @@ module TwScheduleIt
     attr_reader :event
 
     def initialize(talks_file_path)
-      @event = TwScheduleIt::Event.new(
-        talks: TalksFactory.build_from_file(talks_file_path))
+      talks_data = TwScheduleIt::ImportFromFile.build(talks_file_path)
+      talks      = TwScheduleIt::TalksFactory.build(talks_data)
+      @event     = TwScheduleIt::Event.new(talks: talks)
     end
   end
 end
