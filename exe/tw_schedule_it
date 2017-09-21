@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "tw_schedule_it"
+
+puts "Here"
+cli = TwScheduleIt::CLI.new(ARGV)
