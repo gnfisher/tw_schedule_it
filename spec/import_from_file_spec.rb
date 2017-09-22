@@ -1,18 +1,28 @@
 require "spec_helper"
+require "tw_schedule_it/import_from_file"
 
-RSpec.describe TwScheduleIt::ImportFromFile do
-  let(:data) do
-    [['Why The Prequels Almost Ruined Star Wars', '60'],
-     ['Reading And Writing Basic',                '30'],
-     ['The Science of Star Destroyers',           '5']]
+RSpec.describe TwScheduleIt::ImportFromFile, fakefs: true do
+  def stub_talks_data
+    FileUtils.mkdir("/tmp")
+    File.open("/tmp/talk_data.txt", "w") do |f|
+      f.puts "Ruby on Rails Legacy App Maintenance 60min"
+      f.puts "A World Without HackerNews 30min"
+      f.puts "User Interface CSS in Rails Apps 30min"
+      f.puts "Rails for Python Developers lightning"
+    end
+  end
+
+  let(:expected_data) do
+    [['Ruby on Rails Legacy App Maintenance', 60],
+     ['A World Without HackerNews',           30],
+     ['User Interface CSS in Rails Apps',     30],
+     ['Rails for Python Developers',          5]]
   end
 
   it 'returns a nested array with the talk data' do
-    allow(File).to receive(:readlines)
-    talk_data = TwScheduleIt::ImportFromFile(file_path)
+    stub_talks_data
 
-    # TODO:
-    # bundle install fakefs, then set up the fake file action
-    # for the path i pass in, see https://www.bignerdranch.com/blog/fake-it/
+    talk_data = TwScheduleIt::ImportFromFile.build('/tmp/talk_data.txt')
+    expect(talk_data).to match_array(expected_data)
   end
 end
