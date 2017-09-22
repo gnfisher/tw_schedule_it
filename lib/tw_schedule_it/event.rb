@@ -1,13 +1,10 @@
 module TwScheduleIt
   class Event
-    attr_reader :talks
+    attr_reader :talks, :schedule
 
     def initialize(args={}, schedule_class = Schedule)
       @talks = args[:talks]
-    end
-
-    def schedule
-      @schedule ||= schedule_class.new(talks)
+      @schedule = schedule_class(@talks)
     end
   end
 end
