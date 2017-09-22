@@ -1,11 +1,12 @@
 module TwScheduleIt
   class CLI
+    attr_reader :event
+
     def initialize(event)
       @event = event
     end
 
     def start
-      schedule_event
       display_menu
     end
 
@@ -33,11 +34,6 @@ module TwScheduleIt
       puts "(1) View Complete Schedule"
       puts "(2) View a List of Talks"
       puts "Press 'q' to Quit"
-    end
-
-    def schedule_event
-      #@event.schedule_talks
-      "Your event has been successfully scheduled."
     end
 
     def print_schedule
