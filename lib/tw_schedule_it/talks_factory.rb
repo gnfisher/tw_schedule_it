@@ -10,7 +10,7 @@ require 'tw_schedule_it/talks'
 #   [["First Talk Title",  30],
 #    ["Second Talk Title", 60]]
 module TwScheduleIt
-  class TalksFactory
+  module TalksFactory
     def self.build(talks_data)
       talks = talks_data.map { |talk| create_talk(talk) }
       TwScheduleIt::Talks.new(talks)
