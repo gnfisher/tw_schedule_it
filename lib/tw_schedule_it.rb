@@ -4,7 +4,7 @@ require "tw_schedule_it/talks_factory"
 
 module TwScheduleIt
   class App
-    attr_reader :talks_file_path
+    attr_reader :talks_file_path, :event
 
     def initialize(talks_file_path)
       @talks_file_path = talks_file_path
