@@ -1,5 +1,4 @@
 require 'ostruct'
-require 'tw_schedule_it/talks'
 
 # Expects talk_data to be a nested array of talk titles and their durations in
 # minutes.
