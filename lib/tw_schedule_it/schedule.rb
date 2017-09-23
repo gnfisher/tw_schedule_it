@@ -46,7 +46,7 @@ module TwScheduleIt
     def to_a
       themes.each_with_index.map do |theme, i|
         t             = {}
-        t[:title]     = "Theme #{i}"
+        t[:title]     = "Theme #{i + 1}"
         t[:morning]   = theme.morning.to_a << "12:00PM Lunch"
         t[:afternoon] = theme.afternoon.to_a << "05:00PM Networking Event"
         t
