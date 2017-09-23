@@ -12,7 +12,7 @@ module TwScheduleIt
         title    = string.strip
         duration = string[/\d+/].strip.to_i
       else # No digits in string so must be lightning talk
-        title    = string.gsub('lightning', '').strip
+        title    = string.strip
         duration = 5
       end
 
