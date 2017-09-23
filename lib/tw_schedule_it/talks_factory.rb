@@ -1,9 +1,7 @@
 require 'ostruct'
 
 # Expects talk_data to be a nested array of talk titles and their durations in
-# minutes.
-#
-# Example:
+# minutes. See the following example:
 #
 # talk_data =
 #   [["First Talk Title",  30],
@@ -14,6 +12,8 @@ module TwScheduleIt
       talks = talks_data.map { |talk| create_talk(talk, talk_class) }
       TwScheduleIt::Talks.new(talks)
     end
+
+    private
 
     def self.create_talk(talk_data, talk_class)
       talk_class.new(
