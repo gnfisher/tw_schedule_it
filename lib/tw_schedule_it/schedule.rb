@@ -1,8 +1,9 @@
+require 'forwardable'
 require "time"
 
 module TwScheduleIt
   class Schedule
-    attr_accessor :themes, :talks # fix permissions later
+    attr_reader :themes, :talks
 
     def initialize(talks)
       @talks = talks
@@ -13,6 +14,20 @@ module TwScheduleIt
       schedule_talks
       self
     end
+
+    def to_a
+      themes.each_with_index.map do |theme, i|
+        t             = {}
+        t[:title]     = "Theme #{i + 1}"
+        t[:morning]   = theme.morning.to_a << "12:00PM Lunch"
+        t[:afternoon] = theme.afternoon.to_a << "05:00PM Networking Event"
+        t
+      end
+    end
+
+    private
+
+    attr_writer :themes
 
     # Use Decreasing First Fit Bin Packing Algo
     #
@@ -43,20 +58,6 @@ module TwScheduleIt
       talks.sort { |a, b| a.duration <=> b.duration }.reverse
     end
 
-    def shuffle_talks
-      schedule_talks(sorted_talks)
-    end
-
-    def to_a
-      themes.each_with_index.map do |theme, i|
-        t             = {}
-        t[:title]     = "Theme #{i + 1}"
-        t[:morning]   = theme.morning.to_a << "12:00PM Lunch"
-        t[:afternoon] = theme.afternoon.to_a << "05:00PM Networking Event"
-        t
-      end
-    end
-
     class Theme
       attr_reader :morning, :afternoon
 
@@ -77,6 +78,12 @@ module TwScheduleIt
         false
       end
 
+      def scheduled_talks
+        morning.scheduled_talks + afternoon.scheduled_talks
+      end
+
+      private
+
       def morning_time_remaining
         morning.time_remaining
       end
@@ -95,10 +102,6 @@ module TwScheduleIt
       def afternoon_start_time
         now = DateTime.now
         DateTime.new(now.year, now.month, now.day + 1, 13, 0, 0, now.zone)
-      end
-
-      def scheduled_talks
-        morning.scheduled_talks + afternoon.scheduled_talks
       end
     end
 
@@ -122,13 +125,14 @@ module TwScheduleIt
         scheduled_talks.map { |talk| talk.to_s }
       end
 
+      private
+
       def next_talk_start_time
         minutes = @scheduled_talks.reduce(0) { |min, talk| min + talk.duration }
         start_time + Rational(minutes, 1_440)
       end
     end
 
-    require 'forwardable'
     class ScheduledTalk
       extend Forwardable
       def_delegators :@talk, :duration, :title
@@ -141,12 +145,14 @@ module TwScheduleIt
         @start_time = args[:start_time]
       end
 
-      def human_start_time
-        start_time.strftime('%I:%M%p')
-      end
-
       def to_s
         "#{human_start_time} #{title}"
+      end
+
+      private
+
+      def human_start_time
+        start_time.strftime('%I:%M%p')
       end
     end
   end
