@@ -1,6 +1,5 @@
 require "spec_helper"
 require "tw_schedule_it/schedule"
-require "pry"
 
 RSpec.describe TwScheduleIt::Schedule do
   let(:talks) do
