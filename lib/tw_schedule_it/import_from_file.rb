@@ -1,7 +1,7 @@
 module TwScheduleIt
   module ImportFromFile
     def self.build(file_path)
-      file_lines = File.new(file_path) { |f| f.readlines }
+      file_lines = File.open(file_path) { |f| f.readlines }
       file_lines.map { |line| parse(line) }.compact
     end
 
