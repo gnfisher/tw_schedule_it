@@ -7,43 +7,20 @@ module TwScheduleIt
     end
 
     def start
-      display_menu
+      print_schedule
     end
 
     private
 
-    def display_menu
-      options
-      input = $stdin.gets.strip
-
-      case input
-      when /q/
-        exit(0)
-      when /1/
-        print_schedule
-      when /2/
-        list_talks
-      else
-        puts "Invalid input."
-        display_menu
-      end
-    end
-
-    def options
-      puts "\nOptions:"
-      puts "(1) View Complete Schedule"
-      puts "(2) View a List of Talks"
-      puts "Press 'q' to Quit"
-    end
-
     def print_schedule
-      # print out schedule
-      display_menu
-    end
+      event.schedule.to_a.each do |theme|
+        puts "\n#{theme[:title]}:"
+        theme[:morning].each { |talk| puts talk }
+        puts ""
+        theme[:afternoon].each { |talk| puts talk }
+      end
 
-    def list_talks
-      # list talks
-      display_menu
+      exit(0)
     end
   end
 end
