@@ -4,25 +4,42 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO: Delete this and the text above, and describe your gem
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'tw_schedule_it'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install tw_schedule_it
-
 ## Usage
 
-TODO: Write usage instructions here
+To install the gem, clone or copy the project, cd into it, and run:
+
+    $ bundle exec rake install
+
+To remove the gem
+
+    $ gem uninstall tw_schedule_it-0.1.0.gem
+
+
+Alternatively, you can clone this project, cd into it, and run the command line application as so:
+
+    $ bundle exec tw_schedule_it <file>
+
+
+To use the gem, you'll need to provide it a plain text file with one talk per line, formatted as so:
+
+    Talk name (duration)
+
+Duration should be in minutes, like this `30min` or for lightning talks of 5-minutes, you can simply put `lightning`. Here is a breif example:
+
+    Writing Fast Tests Against Enterprise Rails 60min
+    Overdoing it in Python 45min
+    Lua for the Masses 30min
+    Ruby Errors from Mismatched Gem Versions 45min
+    Common Ruby Errors 45min
+    Rails for Python Developers lightning 
+
+To run tests
+
+    $ rake features
+
+and
+
+    $ rake spec
 
 ## Development
 
