@@ -22,7 +22,7 @@ To use the gem, you'll need to provide it a plain text file with one talk per li
 
     Talk name (duration)
 
-Duration should be in minutes, like this `30min` or for lightning talks of 5-minutes, you can simply put `lightning`. Here is a breif example:
+Duration should be in minutes, like this `30min` or for lightning talks of 5-minutes, you can simply put `lightning`. Here is a brief example:
 
     Writing Fast Tests Against Enterprise Rails 60min
     Overdoing it in Python 45min
