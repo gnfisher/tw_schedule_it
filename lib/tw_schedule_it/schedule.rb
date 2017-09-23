@@ -53,7 +53,6 @@ module TwScheduleIt
       end
     end
 
-
     class Theme
       attr_reader :morning, :afternoon
 
@@ -123,16 +122,6 @@ module TwScheduleIt
         minutes = @scheduled_talks.reduce(0) { |min, talk| min + talk.duration }
         start_time + Rational(minutes, 1_440)
       end
-
-      # def talk_start_time(scheduled_talk)
-      #   index = @scheduled_talks.find_index(scheduled_talk)
-      #   minutes = @scheduled_talks.reduce(0) do |min, talk|
-      #     break min if @scheduled_talks.find_index(talk) > index
-      #     min + talk.duration
-      #   end
-
-      #   (start_time + Rational(minutes, 1_440)).strftime('%I:%M%p')
-      # end
     end
 
     require 'forwardable'
