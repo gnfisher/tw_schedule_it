@@ -9,7 +9,7 @@ module TwScheduleIt
 
     def self.parse(string)
       if /\d/ =~ string # Is there any digit in string?
-        title    = string.split(/\d/)[0].strip
+        title    = string.strip
         duration = string[/\d+/].strip.to_i
       else # No digits in string so must be lightning talk
         title    = string.gsub('lightning', '').strip
