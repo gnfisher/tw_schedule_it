@@ -1,7 +1,5 @@
 # TwScheduleIt
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tw_schedule_it`. To experiment with that code, run `bin/console` for an interactive prompt.
-
 ## Usage
 
     Note: You need a Ruby version > 2.0 installed to run this.
@@ -40,6 +38,20 @@ To run tests
 and
 
     $ rake spec
+
+
+## Notes on the Design and Development (en espanol)
+
+Elige hacer la programa en formata de una gem. Es muy facil instalar y probar y aparte se hace la programa mas modular - con un `gem 'tw_schedule_it'` en el Gemfile de cualquier proyecto en el futuro, la funcionalidad esta disponible. Tambien incluye un ejecutable que envuelta la programa en un interfaz de CLI basica. Pero no sera muy dificil utilizar la funcionalidad en un aplicacion de Rails o Sinatra.
+
+Un Evento es el principal entrada de interaccion con la programa, y deje la opcion de usar cualquier class que toma un array de objetos de Talk y responde al metodo de `build`. El class Schedule esta disenado especificamente al spec tecnical del code challenge pero capaz que un dia cambiara las necesidades.
+
+Schedule utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con una sesion de manana y una de tarde. Deje los clases subordinados (Theme, Session, ScheduledTalk) dentro de cuerpo de la Schedule class -- son utilizados unicamente por Schedule, y por ahora me parecia mejor mantener todo junto. En el futuro podemos sacarlos y utilizarlos en otro maneras, si hay necesidad.
+
+Talks y TalkFactory trabajan juntos. TalkFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas rapido y facil hacerlo asi. Un OpenStruct es modificable (si hay necesidad en el futor) y sera muy simple usar un propio objeto Talk en el futuro si hay necesidad tambien, pasando el class como argumento.
+
+Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como lo ejemplo de code challenge. El importacion de datos esta fuera de scope de un Event, utilizado solamente por el ejecutable CLI. Asi que un Event es
+
 
 ## Development
 
