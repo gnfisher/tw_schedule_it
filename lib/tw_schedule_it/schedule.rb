@@ -7,7 +7,11 @@ module TwScheduleIt
     def initialize(talks)
       @talks = talks
       @themes = []
-      schedule_talks(sorted_talks)
+    end
+
+    def build
+      schedule_talks
+      self
     end
 
     # Use Decreasing First Fit Bin Packing Algo
@@ -18,10 +22,10 @@ module TwScheduleIt
     #
     # For future possible optimization, see ideas in this SO answer:
     # https://stackoverflow.com/a/16641501
-    def schedule_talks(talks)
+    def schedule_talks
       themes.clear << Theme.new
 
-      talks.each_with_index do |talk, i|
+      sorted_talks.each_with_index do |talk, i|
         scheduled = false
 
         themes.each do |theme|

@@ -10,7 +10,7 @@ RSpec.describe TwScheduleIt::Schedule do
     end
   end
 
-  let(:schedule) { schedule = TwScheduleIt::Schedule.new(talks) }
+  let(:schedule) { schedule = TwScheduleIt::Schedule.new(talks).build }
 
   it "should schedule all talks" do
     scheduled_talks = schedule.themes.reduce(0) do |count, theme|

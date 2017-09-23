@@ -4,7 +4,7 @@ module TwScheduleIt
 
     def initialize(args={}, schedule_class = Schedule)
       @talks = args[:talks]
-      @schedule = schedule_class.new(@talks)
+      @schedule = schedule_class.new(@talks).build
     end
   end
 end
