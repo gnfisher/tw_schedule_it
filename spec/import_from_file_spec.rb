@@ -1,6 +1,7 @@
 require "spec_helper"
 require "tw_schedule_it/import_from_file"
 
+# The following allows pry to work with fakefs while debugging.
 Pry.config.history.should_save = false
 Pry.config.history.should_load = false
 
