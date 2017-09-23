@@ -42,16 +42,17 @@ and
 
 ## Notes on the Design and Development (en espanol)
 
-Elige hacer la programa en formata de una gem. Es muy facil instalar y probar y aparte se hace la programa mas modular - con un `gem 'tw_schedule_it'` en el Gemfile de cualquier proyecto en el futuro, la funcionalidad esta disponible. Tambien incluye un ejecutable que envuelta la programa en un interfaz de CLI basica. Pero no sera muy dificil utilizar la funcionalidad en un aplicacion de Rails o Sinatra.
+Elegi hacer el programa en el formato de un gem proque es muy facil instalar y probar. Ademas el programa se hace mas modular. Incluyendolo en el Gemfile de cualquier proyecto la funcionalidad estara disponible. Este gem tambien incluye un ejecutable que envuelve el programa en un interfaz de CLI basica.
 
-Un Evento es el principal entrada de interaccion con la programa, y deje la opcion de usar cualquier class que toma un array de objetos de Talk y responde al metodo de `build`. El class Schedule esta disenado especificamente al spec tecnical del code challenge pero capaz que un dia cambiara las necesidades.
+Un Evento es la principal entrada de interaccion con el programa y toma un schedule como argumento. Deje la opcion de usar cualquier class que toma un array de objetos de Talk y responde al metodo de `build` para el schedule. El Schedule class que yo implemente esta disenado especificamente al specificacion tecnical de la code challenge.
 
-Schedule utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con una sesion de manana y una de tarde. Deje los clases subordinados (Theme, Session, ScheduledTalk) dentro de cuerpo de la Schedule class -- son utilizados unicamente por Schedule, y por ahora me parecia mejor mantener todo junto. En el futuro podemos sacarlos y utilizarlos en otro maneras, si hay necesidad.
+Schedule utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con Sesiones de manana y una de tarde, que fue lo mas sencillo y eficiente, pero puede ser optimizado aun mas. Hay algunos recursos en los comentarios del codigo que son relevantes que ofrecen algunas ideas.
 
-Talks y TalkFactory trabajan juntos. TalkFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas rapido y facil hacerlo asi. Un OpenStruct es modificable (si hay necesidad en el futor) y sera muy simple usar un propio objeto Talk en el futuro si hay necesidad tambien, pasando el class como argumento.
+Deje las classes subordinadas de Schedule (Theme, Session, ScheduledTalk) dentro del cuerpo de la Schedule class -- son utilizados unicamente por Schedule, y por ahora me parecia mejor mantener todo junto. En el futuro podemos sacarlos y utilizarlos de otra manera, si hay necesidad.
 
-Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como lo ejemplo de code challenge. El importacion de datos esta fuera de scope de un Event, utilizado solamente por el ejecutable CLI. Asi que un Event es
+Talks y TalkFactory trabajan juntos. TalksFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas facil y rapido hacerlo asi. Un OpenStruct es modificable (si hay necesidad se puede agregar mas propiedades). TalksFactory acepta como argumento el class para usar para un talk (OpenStruct es el default), asi que hay posibilidad implementar algun class especial para modular un talk tambien.
 
+Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como el ejemplo de code challenge y devuelve un nested array con el data. La importacion de datos esta fuera del scope del nucleo del programa y esta utilizado solamente por el CLI ejecutable.
 
 ## Development
 
