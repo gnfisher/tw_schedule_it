@@ -1,3 +1,5 @@
+require "time"
+
 module TwScheduleIt
   class Schedule
     attr_accessor :themes, :talks # fix permissions later
@@ -43,13 +45,13 @@ module TwScheduleIt
 
     def to_a
       themes.each_with_index.map do |theme, i|
-        t = {}
-        t[:id] = i
-        t[:morning] = theme.morning.to_h
-        t[:afternoon] = theme.afternoon.to_h
+        t             = {}
+        t[:title]     = "Theme #{i}"
+        t[:morning]   = theme.morning.to_a << "12:00PM Lunch"
+        t[:afternoon] = theme.afternoon.to_a << "05:00PM Networking Event"
+        t
       end
     end
-
 
 
     class Theme
@@ -80,11 +82,13 @@ module TwScheduleIt
         afternoon.time_remaining
       end
 
+      # Returns tomorrow's date, 9AM in current time zone
       def morning_start_time
         now = DateTime.now
         DateTime.new(now.year, now.month, now.day + 1, 9, 0, 0, now.zone)
       end
 
+      # Returns tomorrow's date, 1PM in current time zone
       def afternoon_start_time
         now = DateTime.now
         DateTime.new(now.year, now.month, now.day + 1, 13, 0, 0, now.zone)
@@ -97,60 +101,60 @@ module TwScheduleIt
 
     class Session
       attr_accessor :time_remaining
-      attr_reader :scheduled_talks
+      attr_reader :scheduled_talks, :start_time, :max_time
 
       def initialize(args={})
-        @starting_time = set_starting_time(args[:starting_time])
-        @time_remaining = args[:max_time]
+        @start_time      = args[:start_time]
+        @time_remaining  = args[:max_time]
+        @max_time        = args[:max_time]
         @scheduled_talks = []
       end
 
       def schedule_talk(talk)
-        @scheduled_talks << ScheduledTalk.new(talk: talk, session: self)
+        @scheduled_talks << ScheduledTalk.new(talk: talk, session: self, start_time: next_talk_start_time)
         self.time_remaining = time_remaining - talk.duration
       end
 
-      def next_start_time
-        if last_talk = @scheduled_talks.last
-          last_talk.start_time + last_talk.duration
-        else
-          0
-        end
+      def to_a
+        scheduled_talks.map { |talk| talk.to_s }
       end
 
-      # Just sets it to 9am tomorrow for now
-      def set_starting_time
-        now = DateTime.now
-        DateTime.new(now.year, now.month, now.day + 1, 9, 0, 0, now.zone)
+      def next_talk_start_time
+        minutes = @scheduled_talks.reduce(0) { |min, talk| min + talk.duration }
+        start_time + Rational(minutes, 1_440)
       end
+
+      # def talk_start_time(scheduled_talk)
+      #   index = @scheduled_talks.find_index(scheduled_talk)
+      #   minutes = @scheduled_talks.reduce(0) do |min, talk|
+      #     break min if @scheduled_talks.find_index(talk) > index
+      #     min + talk.duration
+      #   end
+
+      #   (start_time + Rational(minutes, 1_440)).strftime('%I:%M%p')
+      # end
     end
 
     require 'forwardable'
     class ScheduledTalk
       extend Forwardable
-      def_delegator :@talk, :duration
+      def_delegators :@talk, :duration, :title
 
       attr_reader :session, :start_time
 
       def initialize(args={})
-        @talk = args[:talk]
-        @session = args[:session]
-        set_start_time
+        @talk       = args[:talk]
+        @session    = args[:session]
+        @start_time = args[:start_time]
       end
 
-      def set_start_time
-        @start_time = session.next_start_time
+      def human_start_time
+        start_time.strftime('%I:%M%p')
+      end
+
+      def to_s
+        "#{human_start_time} #{title}"
       end
     end
   end
 end
-
-# Thinking
-#
-# Create Theme A
-#
-# Talk one
-# Fit talk into Theme A morning, or Theme B morning, or create new Theme B
-#
-# Talk two
-# Fit talk into Theme
