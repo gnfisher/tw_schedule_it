@@ -4,19 +4,34 @@
 
     Note: You need a Ruby version > 2.0 installed to run this.
 
+
 To install the gem, clone or copy the project, cd into it, and run:
 
-    $ bundle exec rake install
+    $ bin/setup
+
+    $ rake build
+
+    $ gem install pkg/tw_schedule_it-0.1.0.gem
+
+To use the program
+
+    $ tw_schedule_it <filepath>
 
 To remove the gem
 
-    $ gem uninstall tw_schedule_it-0.1.0.gem
+    $ gem uninstall tw_schedule_it
 
+Alternatively, you can clone this project, cd into it, and run the CLI app directly:
 
-Alternatively, you can clone this project, cd into it, and run the command line application as so:
+    $ bin/setup
 
-    $ bundle exec tw_schedule_it <file>
+Then run the progam
 
+    $ bundle exec exe/tw_schedule_it <filepath>
+
+or
+
+    $ ruby exe/tw_schedule_it <filepath>
 
 To use the gem, you'll need to provide it a plain text file with one talk per line, formatted as so:
 
@@ -44,15 +59,13 @@ and
 
 Elegi hacer el programa en el formato de un gem proque es muy facil instalar y probar. Ademas el programa se hace mas modular. Incluyendolo en el Gemfile de cualquier proyecto la funcionalidad estara disponible. Este gem tambien incluye un ejecutable que envuelve el programa en un interfaz de CLI basica.
 
-Un Evento es la principal entrada de interaccion con el programa y toma un schedule como argumento. Deje la opcion de usar cualquier class que toma un array de objetos de Talk y responde al metodo de `build` para el schedule. El Schedule class que yo implemente esta disenado especificamente al specificacion tecnical de la code challenge.
-
-Schedule utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con Sesiones de manana y una de tarde, que fue lo mas sencillo y eficiente, pero puede ser optimizado aun mas. Hay algunos recursos en los comentarios del codigo que son relevantes que ofrecen algunas ideas.
+El Schedule class utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con Sesiones de manana y una de tarde, que fue lo mas sencillo y eficiente, pero puede ser optimizado aun mas. Hay algunos recursos en los comentarios del codigo que son relevantes que ofrecen algunas ideas.
 
 Deje las classes subordinadas de Schedule (Theme, Session, ScheduledTalk) dentro del cuerpo de la Schedule class -- son utilizados unicamente por Schedule, y por ahora me parecia mejor mantener todo junto. En el futuro podemos sacarlos y utilizarlos de otra manera, si hay necesidad.
 
-Talks y TalkFactory trabajan juntos. TalksFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas facil y rapido hacerlo asi. Un OpenStruct es modificable (si hay necesidad se puede agregar mas propiedades). TalksFactory acepta como argumento el class para usar para un talk (OpenStruct es el default), asi que hay posibilidad implementar algun class especial para modular un talk tambien.
+Talks y TalkFactory trabajan juntos. TalksFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas facil y rapido hacerlo asi. Un OpenStruct es modificable (si hay necesidad se puede agregar mas propiedades, con un Struct, no). TalksFactory acepta como argumento el class para usar para un talk (OpenStruct es el default), asi que hay posibilidad implementar algun class especial para modular un talk tambien.
 
-Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como el ejemplo de code challenge y devuelve un nested array con el data. La importacion de datos esta fuera del scope del nucleo del programa y esta utilizado solamente por el CLI ejecutable.
+Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como el ejemplo de code challenge y devuelve un nested array con el data. La importacion de datos esta fuera del scope del nucleo del programa y esta utilizado solamente por el CLI ejecutable asi que no es un dependency de Schedule. Schedule solo interesa recibir un Array de objetos que son 'Talk-like'. Disenado asi, sera muy facil utilizar Schedule en algun app de Rails o Sinatra. Se puede pasar un ActiveRecord collection de objetos que 'hablan' como un Talk (respondan a `title` y `duration`) a Schedule y tendra la misma funcionalidad.
 
 ## Development
 
