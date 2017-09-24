@@ -12,7 +12,7 @@ if talks_file_path == nil || !File.file?(File.expand_path(talks_file_path))
 end
 
 talks_data = TwScheduleIt::ImportFromFile.build(talks_file_path)
-event = TwScheduleIt::Event.new(
-  talks: TwScheduleIt::TalksFactory.build(talks_data))
+schedule = TwScheduleIt::Schedule.new(
+  TwScheduleIt::TalksFactory.build(talks_data))
 
-TwScheduleIt::CLI.new(event).start
+TwScheduleIt::CLI.new(schedule.build).start

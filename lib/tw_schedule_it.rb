@@ -1,5 +1,4 @@
 require "tw_schedule_it/version"
-require "tw_schedule_it/event"
 require "tw_schedule_it/schedule"
 require "tw_schedule_it/talks"
 require "tw_schedule_it/talks_factory"

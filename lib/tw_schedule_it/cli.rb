@@ -1,9 +1,9 @@
 module TwScheduleIt
   class CLI
-    attr_reader :event
+    attr_reader :schedule
 
-    def initialize(event)
-      @event = event
+    def initialize(schedule)
+      @schedule = schedule
     end
 
     def start
@@ -13,7 +13,7 @@ module TwScheduleIt
     private
 
     def print_schedule
-      event.schedule.to_a.each do |theme|
+      schedule.to_a.each do |theme|
         puts "\n#{theme[:title]}:"
         theme[:morning].each { |talk| puts talk }
         puts ""
