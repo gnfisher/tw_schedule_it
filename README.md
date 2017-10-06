@@ -44,7 +44,7 @@ Duration should be in minutes, like this `30min` or for lightning talks of 5-min
     Lua for the Masses 30min
     Ruby Errors from Mismatched Gem Versions 45min
     Common Ruby Errors 45min
-    Rails for Python Developers lightning 
+    Rails for Python Developers lightning
 
 To run tests
 
@@ -53,19 +53,6 @@ To run tests
 and
 
     $ rake spec
-
-
-## Notes on the Design and Development (en espanol)
-
-Elegi hacer el programa en el formato de un gem proque es muy facil instalar y probar. Ademas el programa se hace mas modular. Incluyendolo en el Gemfile de cualquier proyecto la funcionalidad estara disponible. Este gem tambien incluye un ejecutable que envuelve el programa en un interfaz de CLI basica.
-
-El Schedule class utiliza el Decreasing First Fit Bin Algorithm para organizar los talks en Tematicas con Sesiones de manana y una de tarde, que fue lo mas sencillo y eficiente, pero puede ser optimizado aun mas. Hay algunos recursos en los comentarios del codigo que son relevantes que ofrecen algunas ideas.
-
-Deje las classes subordinadas de Schedule (Theme, Session, ScheduledTalk) dentro del cuerpo de la Schedule class -- son utilizados unicamente por Schedule, y por ahora me parecia mejor mantener todo junto. En el futuro podemos sacarlos y utilizarlos de otra manera, si hay necesidad.
-
-Talks y TalkFactory trabajan juntos. TalksFactory toma un nested array de data de talks, y construye un array de objetos OpenStruct. Un talk es bastante simple como objeto, asi que fue mas facil y rapido hacerlo asi. Un OpenStruct es modificable (si hay necesidad se puede agregar mas propiedades, con un Struct, no). TalksFactory acepta como argumento el class para usar para un talk (OpenStruct es el default), asi que hay posibilidad implementar algun class especial para modular un talk tambien.
-
-Finalmente, hay un ImportFromFile class, que esta usado para leer un archivo de plain text con un formato como el ejemplo de code challenge y devuelve un nested array con el data. La importacion de datos esta fuera del scope del nucleo del programa y esta utilizado solamente por el CLI ejecutable asi que no es un dependency de Schedule. Schedule solo interesa recibir un Array de objetos que son 'Talk-like'. Disenado asi, sera muy facil utilizar Schedule en algun app de Rails o Sinatra. Se puede pasar un ActiveRecord collection de objetos que 'hablan' como un Talk (respondan a `title` y `duration`) a Schedule y tendra la misma funcionalidad.
 
 ## Development
 
