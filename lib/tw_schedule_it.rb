@@ -1,5 +1,8 @@
 require "tw_schedule_it/version"
 require "tw_schedule_it/schedule"
+require "tw_schedule_it/scheduled_talk"
+require "tw_schedule_it/theme"
+require "tw_schedule_it/session"
 require "tw_schedule_it/talks"
 require "tw_schedule_it/talks_factory"
 
