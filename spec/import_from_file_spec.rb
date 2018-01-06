@@ -1,37 +1,45 @@
 require "spec_helper"
 require "tw_schedule_it/import_from_file"
 
-# The following allows pry to work with fakefs while debugging.
-Pry.config.history.should_save = false
-Pry.config.history.should_load = false
+RSpec.describe TwScheduleIt::ImportFromFile do
+  context ".build" do
+    it "creates an array with each line's talk title and duration" do
+      file_path = "spec/fixtures/talk_list.txt"
+      imported_talks = TwScheduleIt::ImportFromFile.build(file_path)
 
-RSpec.describe TwScheduleIt::ImportFromFile, fakefs: true do
-  def stub_talks_data(data)
-    FileUtils.mkdir("/tmp")
-    File.open("/tmp/talk_data.txt", "w") do |f|
-      data.each { |line| f.puts "#{line[0]}" }
+      imported_talks.each do |talk|
+        expect(talk.first).to be_a String
+        expect(talk.last).to be_a Integer
+      end
     end
-  end
 
-  let(:expected_data) do
-    [['Ruby on Rails Legacy App Maintenance 60min', 60],
-     ['A World Without HackerNews 30min',           30],
-     ['User Interface CSS in Rails Apps 30min',     30],
-     ['Rails for Python Developers lightning',       5]]
-  end
+    it "returns a nested array equal in size to number of talks in file" do
+      file_path = "spec/fixtures/talk_list.txt"
+      imported_talks = TwScheduleIt::ImportFromFile.build(file_path)
 
-  it 'returns a nested array with the talk data' do
-    stub_talks_data(expected_data)
+      result = imported_talks.size
 
-    talk_data = TwScheduleIt::ImportFromFile.build('/tmp/talk_data.txt')
-    expect(talk_data).to match_array(expected_data)
-  end
+      expect(result).to eq 5
+    end
 
-  it 'skips blank lines' do
-    data = expected_data << ["\n", 0]
-    stub_talks_data(data)
-    talk_data = TwScheduleIt::ImportFromFile.build('/tmp/talk_data.txt')
+    it "ignores blank lines" do
+      file_path = "spec/fixtures/talk_list_with_blank_lines.txt"
+      imported_talks = TwScheduleIt::ImportFromFile.build(file_path)
 
-    expect(talk_data.last.first).not_to be_empty
+      result = imported_talks.size
+
+      expect(result).to eq 5
+    end
+
+    it "converts lightning talks to 5 minutes length" do
+      file_path = "spec/fixtures/lightning_talks.txt"
+      imported_talks = TwScheduleIt::ImportFromFile.build(file_path)
+
+      result = imported_talks.first
+
+      expect(result.first).to be_a String
+      expect(result.last).to be_a Integer
+
+    end
   end
 end
