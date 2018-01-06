@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require "tw_schedule_it"
-require "tw_schedule_it/cli"
-require "tw_schedule_it/import_from_file"
 
 talks_file_path = ARGV[0]
 
@@ -11,8 +9,7 @@ if talks_file_path == nil || !File.file?(File.expand_path(talks_file_path))
   exit(1)
 end
 
-talks_data = TwScheduleIt::ImportFromFile.build(talks_file_path)
-schedule = TwScheduleIt::Schedule.new(
-  TwScheduleIt::TalksFactory.build(talks_data))
+talks = TwScheduleIt::ImportFromFile.load_from_path(talks_file_path)
+schedule = TwScheduleIt::Schedule.new(talks)
 
 TwScheduleIt::CLI.new(schedule.build).start

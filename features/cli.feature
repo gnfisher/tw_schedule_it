@@ -16,4 +16,5 @@ Feature: Take a plain text file of talk names and print out a schedule to termin
     """
     When I run `tw_schedule_it talk_data`
     Then the output should contain "Theme 1:"
+    And the output should contain "Writing Fast Tests Against Enterprise Rails 60min"
       
