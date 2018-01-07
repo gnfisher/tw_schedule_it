@@ -8,15 +8,14 @@ require 'ostruct'
 #    ["Second Talk Title", 60]]
 module TwScheduleIt
   module TalksFactory
-    def self.build(talks_data, talk_class = OpenStruct)
-      talks = talks_data.map { |talk| create_talk(talk, talk_class) }
-      TwScheduleIt::Talks.new(talks)
+    def self.build(talks_data)
+      talks_data.map { |talk| create_talk(talk) }
     end
 
     private
 
-    def self.create_talk(talk_data, talk_class)
-      talk_class.new(
+    def self.create_talk(talk_data)
+      OpenStruct.new(
         title:    talk_data[0],
         duration: talk_data[1])
     end

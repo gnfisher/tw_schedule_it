@@ -1,5 +1,4 @@
 require "spec_helper"
-require "tw_schedule_it/talks_factory"
 
 RSpec.describe TwScheduleIt::TalksFactory do
   describe '#build' do
